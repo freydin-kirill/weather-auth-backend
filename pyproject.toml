@@ -1,0 +1,84 @@
+[project]
+name = "SimpleAuthProject"
+version = "0.1.0"
+description = "A FastAPI project with SQLAlchemy and Alembic for database migrations."
+authors = [
+    { name = "Kirill", email = "freydin.kirill@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+package-mode = false
+
+
+[tool.black]
+line-length = 88
+exclude = "((.eggs | .git | .pytest_cache | build | dist))"
+
+
+[tool.mypy]
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = ["alembic", "__pycache__"]
+
+
+[tool.ruff]
+# Same as Black.
+line-length = 88
+# In addition to the standard set of exclusions
+extend-exclude = []
+fix = true
+
+[tool.ruff.lint]
+extend-select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "C",  # flake8-comprehensions
+    "B",  # flake8-bugbear
+]
+ignore = [
+    "ANN002", "ANN003", "E203", "E501", "B904", "B006", "B008", "C901",
+]
+
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+
+[tool.ruff.lint.isort]
+# Forces all from imports to appear on their own line
+force-single-line = false
+# Number of blank lines after import section
+lines-after-imports = 2
+# Lines between `import X` and `from Y import Z`
+lines-between-types = 1
+
+
+[tool.poetry.dependencies]
+alembic = "^1.15.2"
+dotenv = "^0.9.9"
+fastapi = "^0.115.12"
+pydantic = "^2.11.4"
+pydantic-settings = "^2.9.1"
+redis = "^5.2.1"
+sqlalchemy = "^2.0.40"
+uvicorn = "^0.34.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^4.2.0"
+poetry = "^2.1.2"
+ruff = "^0.11.6"
+mypy = "^1.15.0"
+pytest = "^7.4.0"
+black = "^25.1.0"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0"]
+build-backend = "poetry.core.masonry.api"

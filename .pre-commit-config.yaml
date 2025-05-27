@@ -1,0 +1,27 @@
+default_language_version:
+    python: python3.12
+
+exclude: (venv|.venv|tests)/.*
+
+repos:
+  # General pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+      - id: double-quote-string-fixer
+      - id: end-of-file-fixer
+        exclude: 'requirements\.txt$'
+
+  # Run ruff linter and formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.10
+    hooks:
+      # Run the linter
+      - id: ruff-check
+        args: [ --fix ]
+      # Run the formatter
+      - id: ruff-format
