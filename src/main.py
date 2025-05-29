@@ -4,11 +4,11 @@ from src.user.router import router
 
 
 app = FastAPI(
-    title="Some Simple App"
+    title="Some Simple App",
 )
 
 app.include_router(
-    router
+    router,
 )
 
 @app.get("/")

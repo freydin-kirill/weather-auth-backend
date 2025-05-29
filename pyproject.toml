@@ -29,15 +29,26 @@ line-length = 88
 extend-exclude = []
 fix = true
 
+
 [tool.ruff.lint]
-select = ["ALL"]
+select = [
+    "B",     # flake8-bugbear
+    "C",     # flake8-comprehensions
+    "D204",  # pydocstyle (incorrect-blank-line-after-class)
+    "D213",  # pydocstyle (multi-line-summary-second-line)
+    "E",     # pycodestyle errors
+    "ERA",   # eradicate
+    "F",     # pyflakes
+    "I",     # isort
+    "PIE",   # flake8-pie
+    "Q",     # flake8-quotes
+    "UP",    # pyupgrade
+    "W",     # pycodestyle warnings
+]
+
 ignore = [
-    "ANN002",   # missing-type-args
-    "ANN003",   # missing-type-kwargs
-    "B904",     # raise-without-from-inside-except
-    "D100",     # undocumented-public-module
-    "D203",     # incorrect-blank-line-before-class
-    "W191",     # tab-indentation
+    "B008",  # function-call-in-default-argument
+    "B904",  # raise-without-from-inside-except
 ]
 
 # Allow fix for all enabled rules (when `--fix`) is provided.

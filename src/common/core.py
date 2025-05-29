@@ -1,4 +1,4 @@
-from sqlalchemy import select, update as sql_update
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
 from src.database import async_session_factory
@@ -9,6 +9,7 @@ class BaseDAO:
     Base Data Access Object (DAO) class.
     This class serves as a common for all DAO classes, providing common functionality.
     """
+
     model = None
 
     @classmethod
@@ -36,19 +37,5 @@ class BaseDAO:
                 return new_instance
 
     @classmethod
-    async def update(cls, filter_by, **values):
-        async with async_session_factory() as session:
-            async with session.begin():
-                query = (
-                    sql_update(cls.model)
-                    .filter(*[getattr(cls.model, k) == v for k, v in filter_by.items()])
-                    .values(**values)
-                    .execution_options(synchronize_session="fetch")
-                )
-                result = await session.execute(query)
-                try:
-                    await session.commit()
-                except SQLAlchemyError as e:
-                    await session.rollback()
-                    raise e
-                return result.rowcount
+    async def update(cls, filter_by: dict, **values):
+        pass

@@ -16,7 +16,7 @@ class Base(AsyncAttrs, DeclarativeBase):
     __repr_cols_number__ = 3
     __repr_cols_name__ = ()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         cols = []
         for idx, col in enumerate(self.__table__.columns.keys()):
             if col in self.__repr_cols_name__ or idx < self.__repr_cols_number__:
@@ -31,10 +31,10 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(
-        server_default=text("TIMEZONE('UTC', NOW())")
+        server_default=text("TIMEZONE('UTC', NOW())"),
     )
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=text("TIMEZONE('UTC', NOW())"), onupdate=datetime.now(UTC)
+        server_default=text("TIMEZONE('UTC', NOW())"), onupdate=datetime.now(UTC),
     )
 
 
