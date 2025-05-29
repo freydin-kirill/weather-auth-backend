@@ -12,7 +12,6 @@ repos:
       - id: check-yaml
       - id: check-merge-conflict
       - id: mixed-line-ending
-      - id: double-quote-string-fixer
       - id: end-of-file-fixer
         exclude: 'requirements\.txt$'
 

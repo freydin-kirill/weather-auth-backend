@@ -11,7 +11,7 @@ package-mode = false
 
 
 [tool.black]
-line-length = 88
+line-length = 120
 exclude = "((.eggs | .git | .pytest_cache | build | dist))"
 
 
@@ -24,7 +24,7 @@ exclude = ["alembic", "__pycache__"]
 
 [tool.ruff]
 # Same as Black.
-line-length = 88
+line-length = 120
 # In addition to the standard set of exclusions
 extend-exclude = []
 fix = true
@@ -92,6 +92,7 @@ pyjwt = "^2.10.1"
 redis = "^5.2.1"
 sqlalchemy = "^2.0.40"
 uvicorn = "^0.34.1"
+pre-commit = "^4.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
