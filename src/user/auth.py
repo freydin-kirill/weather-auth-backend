@@ -3,6 +3,7 @@ from datetime import UTC, datetime, timedelta
 from fastapi.security import HTTPBearer
 from jwt import encode as jwt_encode
 from passlib.context import CryptContext
+from pydantic import EmailStr
 
 from src.config import settings
 from src.user.core import UserDAO
@@ -34,7 +35,7 @@ def create_access_token(data: dict, expires_delta: timedelta = None):
     return encoded_jwt
 
 
-async def authenticate_user(email: str, password: str):
+async def authenticate_user(email: str | EmailStr, password: str):
     user = await UserDAO.find_one_or_none(email=email)
     if not user or not verify_password(password, user.password):
         return None
