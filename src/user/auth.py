@@ -21,17 +21,13 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_access_token(data: dict, expires_delta: timedelta = None):
+def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     if not expires_delta:
         expires_delta = timedelta(minutes=15)
     expire = datetime.now(UTC) + expires_delta
     payload = data.copy()
     payload.update({"exp": expire})
-    encoded_jwt = jwt_encode(
-        payload=payload,
-        key=settings.SECRET_KEY,
-        algorithm=settings.ALGORITHM
-    )
+    encoded_jwt = jwt_encode(payload=payload, key=settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
 
 

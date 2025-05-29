@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from sqlalchemy import text
+from sqlalchemy import TIMESTAMP, text
 from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
@@ -31,10 +31,13 @@ class Base(AsyncAttrs, DeclarativeBase):
 
 class TimestampMixin:
     created_at: Mapped[datetime] = mapped_column(
+        type_=TIMESTAMP(timezone=True),
         server_default=text("TIMEZONE('UTC', NOW())"),
     )
     updated_at: Mapped[datetime] = mapped_column(
-        server_default=text("TIMEZONE('UTC', NOW())"), onupdate=datetime.now(UTC),
+        type_=TIMESTAMP(timezone=True),
+        server_default=text("TIMEZONE('UTC', NOW())"),
+        onupdate=datetime.now(UTC),
     )
 
 
@@ -44,5 +47,7 @@ if __name__ == "__main__":
         async with engine.connect() as connection:
             result = await connection.execute(text("SELECT VERSION()"))
             print(result.all())
+
     import asyncio
+
     asyncio.run(main())
