@@ -1,7 +1,7 @@
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import SQLAlchemyError
 
-from src.database import async_session_factory
+from src.db.session import async_session_factory
 
 
 class BaseDAO:
@@ -24,7 +24,7 @@ class BaseDAO:
         return await cls.find_one_or_none(id=data_id)
 
     @classmethod
-    async def add(cls, **values):
+    async def create(cls, **values):
         async with async_session_factory() as session:
             new_instance = cls.model(**values)
             session.add(new_instance)

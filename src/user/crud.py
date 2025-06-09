@@ -1,4 +1,4 @@
-from src.common.core import BaseDAO
+from src.common.crud import BaseDAO
 from src.user.models import User
 
 

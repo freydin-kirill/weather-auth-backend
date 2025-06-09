@@ -1,19 +1,17 @@
-from datetime import UTC, datetime
+from collections.abc import AsyncGenerator
 
 from fastapi import Depends, Request
-from jwt import PyJWTError
-from jwt import decode as jwt_decode
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.config import settings
-from src.exceptions import (
+from src.common.exceptions import (
     ForbiddenException,
-    TokenExpiredException,
-    TokenInvalidException,
     TokenNotFoundException,
     UserInactiveException,
     UserNotFoundException,
 )
-from src.user.core import UserDAO
+from src.db.session import async_session_factory
+from src.user.core.security import verify_access_token
+from src.user.crud import UserDAO
 from src.user.models import User
 
 
@@ -25,27 +23,10 @@ def get_token(request: Request):
 
 
 async def get_current_user(token: str = Depends(get_token)):
-    try:
-        payload = jwt_decode(
-            jwt=token,
-            key=settings.SECRET_KEY,
-            algorithms=[settings.ALGORITHM])
-    except PyJWTError:
-        raise TokenInvalidException
-
-    expire = payload.get("exp")
-    expire_time = datetime.fromtimestamp(int(expire), tz=UTC)
-    if (not expire) or (expire_time < datetime.now(UTC)):
-        raise TokenExpiredException
-
-    user_id = payload.get("sub")
-    if not user_id:
-        raise UserNotFoundException
-
+    user_id = verify_access_token(token)
     user = await UserDAO.find_one_or_none_by_id(int(user_id))
     if not user:
         raise UserNotFoundException
-
     return user
 
 
@@ -59,3 +40,8 @@ async def get_user_permission(current_user: User = Depends(get_current_active_us
     if current_user.is_admin:
         return current_user
     raise ForbiddenException
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_factory() as session:
+        yield session

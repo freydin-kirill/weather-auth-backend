@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,14 +9,18 @@ class Settings(BaseSettings):
         env_file=Path(__file__).parent / ".." / ".env",
     )
 
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    DB_USER: str
-    DB_PASS: str
+    DB_HOST: str = Field(..., env="DB_HOST")
+    DB_PORT: int = Field(..., env="DB_PORT")
+    DB_NAME: str = Field(..., env="DB_NAME")
+    DB_USER: str = Field(..., env="DB_USER")
+    DB_PASS: str = Field(..., env="DB_PASS")
 
-    SECRET_KEY: str
-    ALGORITHM: str
+    JWT_SECRET_KEY: str = Field(..., env="JWT_SECRET_KEY")
+    JWT_ALGORITHM: str = Field("HS256", env="JWT_ALGORITHM")
+    JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(60, env="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
+
+    WEATHER_API_KEY: str = Field(..., env="WEATHER_API_KEY")
+    WEATHER_API_BASE_URL: str = Field("https://api.open-meteo.com/v1/", env="WEATHER_API_BASE_URL")
 
     @property
     def db_url_async(self) -> str:
