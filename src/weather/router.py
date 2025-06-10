@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/now/", response_model=SCurrentWeatherData)
+@router.post("/current/", response_model=SCurrentWeatherData)
 async def get_weather_current(latitude: list[float], longitude: list[float], user=Depends(get_current_active_user)):
     response = await WeatherAPI.fetch_current_weather(latitude, longitude)
     return SCurrentWeatherData.model_validate(response)
