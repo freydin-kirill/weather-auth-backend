@@ -7,8 +7,13 @@ from src.user.models import User
 
 router = APIRouter(
     prefix="/admin",
-    tags=["Admin"],
+    tags=["Administration"],
 )
+
+
+@router.get("/get_all_users/")
+async def get_all_users(admin: User = Depends(get_user_permission)):
+    return await UserDAO.get_all()
 
 
 @router.post("/delete_user/")
