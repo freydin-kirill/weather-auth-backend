@@ -2,7 +2,7 @@ from fastapi import APIRouter, Body, Depends
 
 from src.common.dependencies import get_current_active_user
 from src.weather.schemas import SCurrentWeatherData, SForecastWeatherData
-from src.weather.weather_api import fetch_current_weather, fetch_forecast_weather
+from src.weather.weather_api import WeatherAPI
 
 
 router = APIRouter(
@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.post("/now/", response_model=SCurrentWeatherData)
 async def get_weather_current(latitude: list[float], longitude: list[float], user=Depends(get_current_active_user)):
-    response = await fetch_current_weather(latitude, longitude)
+    response = await WeatherAPI.fetch_current_weather(latitude, longitude)
     return SCurrentWeatherData.model_validate(response)
 
 
@@ -24,5 +24,5 @@ async def get_weather_forecast(
     longitude: list[float] = Body(),
     user=Depends(get_current_active_user),
 ):
-    response = await fetch_forecast_weather(days, latitude, longitude)
+    response = await WeatherAPI.fetch_forecast_weather(days, latitude, longitude)
     return SForecastWeatherData.model_validate(response)

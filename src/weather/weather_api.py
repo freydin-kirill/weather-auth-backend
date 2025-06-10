@@ -3,48 +3,41 @@ from httpx import AsyncClient
 from src.config import settings
 
 
-async def send_weather_request(params: dict) -> dict:
-    async with AsyncClient() as client:
-        response = await client.get(settings.WEATHER_API_BASE_URL, params=params)
-        response.raise_for_status()
-        return response.json()
-
-
-async def fetch_current_weather(
-    latitude: list[float],
-    longitude: list[float],
-) -> dict:
-    params = {
-        "latitude": latitude,
-        "longitude": longitude,
+class WeatherAPI:
+    _base_url = settings.WEATHER_API_BASE_URL
+    _params: dict[str, str | int | list[str | float]] = {
+        "latitude": None,
+        "longitude": None,
         "timezone": "auto",
-        "current": [
+    }
+
+    @classmethod
+    async def send_weather_request(cls) -> dict:
+        async with AsyncClient() as client:
+            response = await client.get(cls._base_url, params=cls._params)
+            response.raise_for_status()
+            return response.json()
+
+    @classmethod
+    async def fetch_current_weather(cls, latitude: list[float], longitude: list[float]) -> dict:
+        cls._params.update({"latitude": latitude, "longitude": longitude})
+        cls._params["current"] = [
             "temperature_2m",
             "weather_code",
             "relative_humidity_2m",
             "pressure_msl",
-        ],
-    }
+        ]
 
-    return await send_weather_request(params)
+        return await cls.send_weather_request()
 
-
-async def fetch_forecast_weather(
-    days: int,
-    latitude: list[float],
-    longitude: list[float],
-) -> dict:
-    params = {
-        "latitude": latitude,
-        "longitude": longitude,
-        "timezone": "auto",
-        "hourly": [
+    @classmethod
+    async def fetch_forecast_weather(cls, days: int, latitude: list[float], longitude: list[float]) -> dict:
+        cls._params.update({"latitude": latitude, "longitude": longitude, "days": days})
+        cls._params["hourly"] = [
             "temperature_2m",
             "weather_code",
             "relative_humidity_2m",
             "pressure_msl",
-        ],
-        "forecast_days": days,
-    }
+        ]
 
-    return await send_weather_request(params)
+        return await cls.send_weather_request()
