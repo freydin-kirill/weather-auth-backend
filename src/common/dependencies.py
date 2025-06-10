@@ -1,6 +1,7 @@
 from collections.abc import AsyncGenerator
 
 from fastapi import Depends, Request
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.common.exceptions import (
@@ -45,3 +46,8 @@ async def get_user_permission(current_user: User = Depends(get_current_active_us
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory() as session:
         yield session
+
+
+async def get_async_client() -> AsyncGenerator[AsyncClient, None]:
+    async with AsyncClient() as client:
+        yield client

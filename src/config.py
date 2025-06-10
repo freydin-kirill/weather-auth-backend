@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(60, env="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
 
     WEATHER_API_KEY: str = Field(..., env="WEATHER_API_KEY")
-    WEATHER_API_BASE_URL: str = Field("https://api.open-meteo.com/v1/", env="WEATHER_API_BASE_URL")
+    WEATHER_API_BASE_URL: str = Field("https://api.open-meteo.com/v1/forecast", env="WEATHER_API_BASE_URL")
 
     @property
     def db_url_async(self) -> str:

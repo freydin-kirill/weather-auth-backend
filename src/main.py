@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from src.user.routers.admin import router as admin_router
 from src.user.routers.auth import router as auth_router
 from src.user.routers.user import router as user_router
+from src.weather.router import router as weather_router
 
 
 app = FastAPI(
@@ -12,6 +13,7 @@ app = FastAPI(
 app.include_router(admin_router)
 app.include_router(auth_router)
 app.include_router(user_router)
+app.include_router(weather_router)
 
 
 @app.get("/")
