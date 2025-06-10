@@ -34,7 +34,7 @@ async def login_user(response: Response, user_data: SUserLogin):
         raise UserInactiveException
     access_token = create_access_token(subject=str(user.id))
     response.set_cookie(key="users_access_token", value=access_token, httponly=True)
-    return {"access_token": access_token}
+    return {"message": "Login successfully"}
 
 
 @router.post("/logout/")

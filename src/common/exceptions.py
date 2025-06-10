@@ -23,7 +23,7 @@ UserAlreadyExistsException = HTTPException(
 
 TokenInvalidException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Invalid toker",
+    detail="Invalid token",
 )
 
 TokenExpiredException = HTTPException(
