@@ -9,6 +9,7 @@ from src.common.exceptions import TokenExpiredException, TokenInvalidException, 
 from src.config import settings
 
 
+# TODO: Add JWT authentication support
 security = HTTPBearer()
 
 

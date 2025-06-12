@@ -1,19 +1,25 @@
+from typing import Generic, TypeVar
+
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import SQLAlchemyError
 
+from src.db.base import Base
 from src.db.session import async_session_factory
 
 
-class BaseDAO:
+T = TypeVar("T", bound=Base)
+
+
+class BaseDAO(Generic[T]):
     """
     Base Data Access Object (DAO) class.
     This class serves as a common for all DAO classes, providing common functionality.
     """
 
-    model = None
+    model = type[T]
 
     @classmethod
-    async def get_all(cls):
+    async def find_all(cls):
         async with async_session_factory() as session:
             query = select(cls.model)
             result = await session.execute(query)

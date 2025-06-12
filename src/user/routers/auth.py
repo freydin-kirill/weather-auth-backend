@@ -1,7 +1,11 @@
 from fastapi import APIRouter
 from starlette.responses import Response
 
-from src.common.exceptions import UserAlreadyExistsException, UserEmailOrPasswordException, UserInactiveException
+from src.common.exceptions import (
+    UserAlreadyExistsException,
+    UserEmailOrPasswordException,
+    UserInactiveException,
+)
 from src.user.core.hashing import get_hashed_password, verify_password
 from src.user.core.security import create_access_token
 from src.user.crud import UserDAO

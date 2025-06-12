@@ -5,9 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(
-        env_file=Path(__file__).parent / ".." / ".env",
-    )
+    model_config = SettingsConfigDict(env_file=Path(__file__).parent / ".." / ".env")
 
     DB_HOST: str = Field(..., env="DB_HOST")
     DB_PORT: int = Field(..., env="DB_PORT")
@@ -19,8 +17,10 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = Field("HS256", env="JWT_ALGORITHM")
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(60, env="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
 
-    WEATHER_API_KEY: str = Field(..., env="WEATHER_API_KEY")
-    WEATHER_API_BASE_URL: str = Field("https://api.open-meteo.com/v1/forecast", env="WEATHER_API_BASE_URL")
+    OPEN_METEO_API_URL: str = Field(..., env="OPEN_METEO_API_URL")
+
+    METEO_SOURCE_API_KEY: str = Field(..., env="METEO_SOURCE_API_KEY")
+    METEO_SOURCE_API_URL: str = Field(..., env="METEO_SOURCE_API_URL")
 
     @property
     def db_url_async(self) -> str:

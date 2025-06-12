@@ -10,8 +10,8 @@ from src.user.schemas import SUserRead
 
 
 router = APIRouter(
-    prefix="/user",
-    tags=["User"],
+    prefix="/users",
+    tags=["Users"],
 )
 
 

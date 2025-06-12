@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.get("/get_all_users/")
 async def get_all_users(admin: User = Depends(get_user_permission)):
-    return await UserDAO.get_all()
+    return await UserDAO.find_all()
 
 
 @router.post("/delete_user/")
