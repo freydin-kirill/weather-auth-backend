@@ -1,13 +1,18 @@
 # Weather Auth Backend
 
 A **FastAPI** service that provides **user registration**, **authentication** and 
-**administration** features, plus integration with the 
-[**OpenMeteo API**](https://open-meteo.com/en/docs) to fetch weather data.
+**administration** features, plus integration with different weather APIs to fetch 
+weather data. 
 
-**Authenticated users** can request current weather or forecasts for any given 
+**Authenticated users** can request current weather or hourly forecasts for any given 
 geographic location (latitude & longitude).
 
 ---
+
+## Integrated Weather APIs
+- [**OpenMeteo API**](https://open-meteo.com/en/docs) 
+- [**MeteoSource API**](https://www.meteosource.com/documentation) 
+
 
 ## Features
 
@@ -27,7 +32,7 @@ geographic location (latitude & longitude).
 
 - **Weather Endpoints**  
   - **Current weather** (`POST /weather/current`)  
-  - **Weather forecast** (`POST /weather/forecast`)
+  - **Hourly weather forecast** (`POST /weather/hourly_forecast`)
 
 - **Security**  
   - ~~OAuth2 password flow with **Bearer** tokens~~  
