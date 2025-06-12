@@ -11,7 +11,7 @@ package-mode = false
 
 
 [tool.black]
-line-length = 120
+line-length = 110
 exclude = "((.eggs | .git | .pytest_cache | build | dist))"
 
 
@@ -24,7 +24,7 @@ exclude = ["alembic", "__pycache__"]
 
 [tool.ruff]
 # Same as Black.
-line-length = 120
+line-length = 110
 # In addition to the standard set of exclusions
 extend-exclude = []
 fix = true
