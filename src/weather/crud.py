@@ -1,7 +1,6 @@
 from src.common.crud import BaseDAO
+from src.weather.adapters.base import BaseWeatherAdapter
 from src.weather.models import WeatherSearch
-from src.weather.providers import get_write_schema_by_provider
-from src.weather.utils import ProviderEnum
 
 
 class WeatherSearchDAO(BaseDAO[WeatherSearch]):
@@ -13,9 +12,8 @@ class WeatherSearchDAO(BaseDAO[WeatherSearch]):
     model = WeatherSearch
 
     @classmethod
-    async def log_weather_search(cls, user_id: int, provider: ProviderEnum, data: dict) -> dict:
-        log_data = {"user_id": user_id, "provider": provider.value}
-        log_data.update(data)
-        record = get_write_schema_by_provider(provider).model_validate(log_data)
-        record_dict = record.model_dump()
-        return await cls.create(**record_dict)
+    async def log_weather_search(cls, user_id: int, adapter: BaseWeatherAdapter, raw_response: dict) -> dict:
+        record = raw_response.copy()
+        record.update({"user_id": user_id, "provider": adapter.name()})
+        record = adapter.get_write_schema().model_validate(record)
+        return await cls.create(**record.model_dump())

@@ -1,6 +1,8 @@
-from typing import Any
+from datetime import datetime
 
 from pydantic import AliasChoices, BaseModel, Field
+
+from src.weather.utils import ProviderEnum
 
 
 class BaseWeatherSchema(BaseModel):
@@ -9,9 +11,11 @@ class BaseWeatherSchema(BaseModel):
     longitude: float | str = Field(validation_alias=AliasChoices("lon", "longitude"))
 
 
-class CurrentWeatherSchema(BaseWeatherSchema):
-    current: dict[str, Any] | None
+class BaseWriteWeatherSchema(BaseModel):
+    user_id: int
+    provider: ProviderEnum
 
 
-class HourlyWeatherSchema(BaseWeatherSchema):
-    hourly: dict[str, Any] | None
+class BaseReadWeatherSchema(BaseModel):
+    id: int
+    created_at: datetime

@@ -1,5 +1,12 @@
 from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
+from src.weather.schemas.base import BaseWeatherSchema, BaseWriteWeatherSchema
+from src.weather.schemas.meteo_source import (
+    SCurrentMeteoSourceData,
+    SHourlyMeteoSourceData,
+    SWriteMeteoSourceData,
+)
+from src.weather.utils import ProviderEnum, SchemaModeEnum
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):
@@ -10,6 +17,22 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
         "timezone": "auto",
         "key": settings.METEO_SOURCE_API_KEY,
     }
+
+    @classmethod
+    def name(cls) -> str:
+        return ProviderEnum.METEO_SOURCE.value
+
+    @classmethod
+    def get_write_schema(cls) -> type[BaseWriteWeatherSchema]:
+        return SWriteMeteoSourceData
+
+    @classmethod
+    def get_response_schema(cls, mode: SchemaModeEnum) -> type[BaseWeatherSchema]:
+        schemas = {
+            SchemaModeEnum.CURRENT.value: SCurrentMeteoSourceData,
+            SchemaModeEnum.HOURLY.value: SHourlyMeteoSourceData,
+        }
+        return schemas[mode.value]
 
     @classmethod
     async def fetch_current_weather(cls, latitude: float, longitude: float, **kwargs) -> dict:

@@ -1,5 +1,9 @@
 from enum import Enum
 
+from src.weather.adapters.base import BaseWeatherAdapter
+from src.weather.adapters.meteo_source import MeteoSourceAdapter
+from src.weather.adapters.open_meteo import OpenMeteoAdapter
+
 
 class ProviderEnum(Enum):
     OPEN_METEO = "open_meteo"
@@ -9,6 +13,19 @@ class ProviderEnum(Enum):
 class SchemaModeEnum(Enum):
     CURRENT = "current"
     HOURLY = "hourly"
+
+
+def get_weather_adapter_by_name(name: ProviderEnum) -> BaseWeatherAdapter:
+    providers: dict[str, BaseWeatherAdapter] = {
+        ProviderEnum.OPEN_METEO.value: OpenMeteoAdapter(),
+        ProviderEnum.METEO_SOURCE.value: MeteoSourceAdapter(),
+    }
+    try:
+        return providers[name.value]
+    except KeyError:
+        raise ValueError(
+            f"Provider '{name.value}' not found. Available providers: {', '.join(providers.keys())}"
+        )
 
 
 open_meteo_weather_codes = {
