@@ -37,7 +37,7 @@ class BaseDAO(Generic[T]):
         return await cls.find_one_or_none(id=data_id)
 
     @classmethod
-    async def create(cls, **values):
+    async def create(cls, **values) -> dict:
         async with async_session_factory() as session:
             new_instance = cls.model(**values)
             session.add(new_instance)
@@ -49,7 +49,7 @@ class BaseDAO(Generic[T]):
             return {"message": "Update successful", "body": new_instance}
 
     @classmethod
-    async def update(cls, item_id, **values):
+    async def update(cls, item_id, **values) -> dict:
         async with async_session_factory() as session:
             query = update(cls.model).filter(cls.model.id == item_id).values(**values)
             await session.execute(query)
@@ -61,7 +61,7 @@ class BaseDAO(Generic[T]):
             return {"message": "Update successful"}
 
     @classmethod
-    async def delete(cls, item_id):
+    async def delete(cls, item_id) -> dict:
         async with async_session_factory() as session:
             query = delete(cls.model).filter(cls.model.id == item_id)
             await session.execute(query)

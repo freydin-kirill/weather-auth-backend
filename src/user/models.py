@@ -1,11 +1,13 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.common.mixin import TimestampMixin
+from src.common.mixin import TimestampsMixin
 from src.db.base import Base
 
 
-class User(Base, TimestampMixin):
+class User(Base, TimestampsMixin):
+    __tablename__ = "users"
+
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(String(length=1024), nullable=False)  # hashed

@@ -10,6 +10,7 @@ from alembic import context
 from src.config import settings
 from src.db.base import Base
 from src.user.models import User  # noqa
+from src.weather.models import WeatherSearch  # noqa
 
 
 # this is the Alembic Config object, which provides

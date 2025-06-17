@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, declared_attr
+from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(AsyncAttrs, DeclarativeBase):
@@ -13,8 +13,3 @@ class Base(AsyncAttrs, DeclarativeBase):
             if col in self.__repr_cols_name__ or idx < self.__repr_cols_number__:
                 cols.append(f"{col}: {getattr(self, col)}")
         return f"\n<{self.__class__.__name__}> {', '.join(cols)}"
-
-    @classmethod
-    @declared_attr.directive
-    def __tablename__(cls) -> str:
-        return f"{cls.__name__.lower()}s"

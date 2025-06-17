@@ -92,6 +92,7 @@ pyjwt = "^2.10.1"
 redis = "^5.2.1"
 sqlalchemy = "^2.0.40"
 uvicorn = "^0.34.1"
+tzdata = "^2025.2"
 
 
 [tool.poetry.group.dev.dependencies]
