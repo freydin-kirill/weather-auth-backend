@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.common.dependencies import get_current_active_user
+from src.weather.crud import WeatherSearchDAO
 from src.weather.utils.enums import Providers, SchemaMode
 from src.weather.utils.providers import get_weather_adapter_by_name
 
@@ -20,6 +21,7 @@ async def get_weather_current(
 ):
     adapter = get_weather_adapter_by_name(weather_provider)
     response = await adapter.fetch_current_weather(latitude, longitude)
+    await WeatherSearchDAO.log_weather_search(user.id, adapter, response)
     return adapter.get_response_schema(SchemaMode.CURRENT).model_validate(response)
 
 
@@ -32,4 +34,5 @@ async def get_weather_hourly(
 ):
     adapter = get_weather_adapter_by_name(weather_provider)
     response = await adapter.fetch_hourly_forecast(latitude, longitude)
+    await WeatherSearchDAO.log_weather_search(user.id, adapter, response)
     return adapter.get_response_schema(SchemaMode.HOURLY).model_validate(response)
