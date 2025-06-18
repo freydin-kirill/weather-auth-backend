@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 from httpx import AsyncClient
 
-from src.weather.enums import SchemaMode
 from src.weather.schemas.base import BaseWeatherSchema
+from src.weather.utils.enums import SchemaMode
 
 
 async def send_weather_request(url, params) -> dict:

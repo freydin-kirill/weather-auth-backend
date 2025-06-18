@@ -3,7 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from src.common.mixin import CreatedAtMixin
 from src.db.base import Base
-from src.weather.enums import Providers
+from src.weather.utils.enums import Providers
 
 
 class WeatherSearch(Base, CreatedAtMixin):

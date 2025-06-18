@@ -1,12 +1,12 @@
 from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
-from src.weather.enums import Providers, SchemaMode
 from src.weather.schemas.base import BaseWeatherSchema, BaseWriteWeatherSchema
 from src.weather.schemas.meteo_source import (
     SCurrentMeteoSourceData,
     SHourlyMeteoSourceData,
     SWriteMeteoSourceData,
 )
+from src.weather.utils.enums import Providers, SchemaMode
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):

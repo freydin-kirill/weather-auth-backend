@@ -4,7 +4,7 @@ from typing import Any
 from pydantic import AliasChoices, AliasPath, Field, field_validator
 
 from src.weather.schemas.base import BaseReadWeatherSchema, BaseWeatherSchema, BaseWriteWeatherSchema
-from src.weather.utils import open_meteo_weather_codes
+from src.weather.utils.open_meteo import open_meteo_weather_codes
 
 
 class SCurrentOpenMeteoData(BaseWeatherSchema):

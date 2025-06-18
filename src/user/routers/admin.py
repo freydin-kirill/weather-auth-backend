@@ -27,5 +27,7 @@ async def change_user_role(user_id: int, is_admin: bool = False, admin: User = D
 
 
 @router.post("/change_user_active_status/")
-async def change_user_active_status(user_id: int, is_active: bool = False, admin: User = Depends(get_user_permission)):
+async def change_user_active_status(
+    user_id: int, is_active: bool = False, admin: User = Depends(get_user_permission)
+):
     return await UserDAO.update(item_id=user_id, is_active=is_active)
