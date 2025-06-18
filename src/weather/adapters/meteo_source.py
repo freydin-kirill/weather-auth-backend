@@ -1,12 +1,12 @@
 from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
+from src.weather.enums import Providers, SchemaMode
 from src.weather.schemas.base import BaseWeatherSchema, BaseWriteWeatherSchema
 from src.weather.schemas.meteo_source import (
     SCurrentMeteoSourceData,
     SHourlyMeteoSourceData,
     SWriteMeteoSourceData,
 )
-from src.weather.utils import ProviderEnum, SchemaModeEnum
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):
@@ -20,17 +20,17 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
 
     @classmethod
     def name(cls) -> str:
-        return ProviderEnum.METEO_SOURCE.value
+        return Providers.METEO_SOURCE.value
 
     @classmethod
     def get_write_schema(cls) -> type[BaseWriteWeatherSchema]:
         return SWriteMeteoSourceData
 
     @classmethod
-    def get_response_schema(cls, mode: SchemaModeEnum) -> type[BaseWeatherSchema]:
+    def get_response_schema(cls, mode: SchemaMode) -> type[BaseWeatherSchema]:
         schemas = {
-            SchemaModeEnum.CURRENT.value: SCurrentMeteoSourceData,
-            SchemaModeEnum.HOURLY.value: SHourlyMeteoSourceData,
+            SchemaMode.CURRENT.value: SCurrentMeteoSourceData,
+            SchemaMode.HOURLY.value: SHourlyMeteoSourceData,
         }
         return schemas[mode.value]
 

@@ -46,7 +46,7 @@ class BaseDAO(Generic[T]):
             except SQLAlchemyError as e:
                 await session.rollback()
                 raise e
-            return {"message": "Update successful", "body": new_instance}
+            return {"message": "Create successful", "body": new_instance}
 
     @classmethod
     async def update(cls, item_id, **values) -> dict:

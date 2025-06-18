@@ -1,8 +1,8 @@
 from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
+from src.weather.enums import Providers, SchemaMode
 from src.weather.schemas.base import BaseWeatherSchema, BaseWriteWeatherSchema
 from src.weather.schemas.open_meteo import SCurrentOpenMeteoData, SHourlyOpenMeteoData, SWriteOpenMeteoData
-from src.weather.utils import ProviderEnum, SchemaModeEnum
 
 
 class OpenMeteoAdapter(BaseWeatherAdapter):
@@ -15,17 +15,17 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
 
     @classmethod
     def name(cls) -> str:
-        return ProviderEnum.OPEN_METEO.value
+        return Providers.OPEN_METEO.value
 
     @classmethod
     def get_write_schema(cls) -> type[BaseWriteWeatherSchema]:
         return SWriteOpenMeteoData
 
     @classmethod
-    def get_response_schema(cls, mode: SchemaModeEnum) -> type[BaseWeatherSchema]:
+    def get_response_schema(cls, mode: SchemaMode) -> type[BaseWeatherSchema]:
         schemas = {
-            SchemaModeEnum.CURRENT.value: SCurrentOpenMeteoData,
-            SchemaModeEnum.HOURLY.value: SHourlyOpenMeteoData,
+            SchemaMode.CURRENT.value: SCurrentOpenMeteoData,
+            SchemaMode.HOURLY.value: SHourlyOpenMeteoData,
         }
         return schemas[mode.value]
 

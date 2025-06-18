@@ -2,8 +2,8 @@ from abc import ABC, abstractmethod
 
 from httpx import AsyncClient
 
+from src.weather.enums import SchemaMode
 from src.weather.schemas.base import BaseWeatherSchema
-from src.weather.utils import SchemaModeEnum
 
 
 async def send_weather_request(url, params) -> dict:
@@ -29,7 +29,7 @@ class BaseWeatherAdapter(ABC):
 
     @classmethod
     @abstractmethod
-    def get_response_schema(cls, mode: SchemaModeEnum) -> type[BaseWeatherSchema]:
+    def get_response_schema(cls, mode: SchemaMode) -> type[BaseWeatherSchema]:
         pass
 
     @classmethod

@@ -2,8 +2,6 @@ from datetime import datetime
 
 from pydantic import AliasChoices, BaseModel, Field
 
-from src.weather.utils import ProviderEnum
-
 
 class BaseWeatherSchema(BaseModel):
     timezone: str
@@ -13,7 +11,7 @@ class BaseWeatherSchema(BaseModel):
 
 class BaseWriteWeatherSchema(BaseModel):
     user_id: int
-    provider: ProviderEnum
+    provider: str
 
 
 class BaseReadWeatherSchema(BaseModel):

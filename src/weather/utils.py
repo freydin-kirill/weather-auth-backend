@@ -1,24 +1,13 @@
-from enum import Enum
-
 from src.weather.adapters.base import BaseWeatherAdapter
 from src.weather.adapters.meteo_source import MeteoSourceAdapter
 from src.weather.adapters.open_meteo import OpenMeteoAdapter
+from src.weather.enums import Providers
 
 
-class ProviderEnum(Enum):
-    OPEN_METEO = "open_meteo"
-    METEO_SOURCE = "meteo_source"
-
-
-class SchemaModeEnum(Enum):
-    CURRENT = "current"
-    HOURLY = "hourly"
-
-
-def get_weather_adapter_by_name(name: ProviderEnum) -> BaseWeatherAdapter:
+def get_weather_adapter_by_name(name: Providers) -> BaseWeatherAdapter:
     providers: dict[str, BaseWeatherAdapter] = {
-        ProviderEnum.OPEN_METEO.value: OpenMeteoAdapter(),
-        ProviderEnum.METEO_SOURCE.value: MeteoSourceAdapter(),
+        Providers.OPEN_METEO.value: OpenMeteoAdapter(),
+        Providers.METEO_SOURCE.value: MeteoSourceAdapter(),
     }
     try:
         return providers[name.value]

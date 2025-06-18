@@ -10,7 +10,7 @@ from src.weather.utils import open_meteo_weather_codes
 class SCurrentOpenMeteoData(BaseWeatherSchema):
     time: datetime = Field(validation_alias=AliasPath("current", "time"))
     temperature: float = Field(validation_alias=AliasPath("current", "temperature_2m"))
-    weather: str | int = Field(default=None, validation_alias=AliasPath("current", "weather_code"))
+    weather: str | int = Field(validation_alias=AliasPath("current", "weather_code"))
     wind_speed: float = Field(validation_alias=AliasPath("current", "wind_speed_10m"))
 
     @field_validator("weather", mode="before")
@@ -22,7 +22,7 @@ class SCurrentOpenMeteoData(BaseWeatherSchema):
 class SHourlyOpenMeteoData(BaseWeatherSchema):
     time: list[datetime] = Field(validation_alias=AliasPath("hourly", "time"))
     temperature: list[float] = Field(validation_alias=AliasPath("hourly", "temperature_2m"))
-    weather: list[str | int] = Field(default=None, validation_alias=AliasPath("hourly", "weather_code"))
+    weather: list[str | int] = Field(validation_alias=AliasPath("hourly", "weather_code"))
     wind_speed: list[float] = Field(validation_alias=AliasPath("hourly", "wind_speed_10m"))
 
     @field_validator("weather", mode="before")
