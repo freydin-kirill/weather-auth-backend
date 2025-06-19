@@ -1,7 +1,7 @@
 from datetime import UTC, datetime, timedelta
 
 from fastapi.security import HTTPBearer
-from jwt import PyJWTError
+from jwt import ExpiredSignatureError, PyJWTError
 from jwt import decode as jwt_decode
 from jwt import encode as jwt_encode
 
@@ -25,6 +25,8 @@ def create_access_token(subject: str, expires_delta: timedelta | None = None) ->
 def verify_access_token(token: str) -> str:
     try:
         payload = jwt_decode(jwt=token, key=settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
+    except ExpiredSignatureError:
+        raise TokenExpiredException
     except PyJWTError:
         raise TokenInvalidException
 
