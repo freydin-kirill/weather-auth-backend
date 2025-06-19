@@ -7,5 +7,6 @@ class Providers(Enum):
 
 
 class SchemaMode(Enum):
+    READ = "read"
     CURRENT = "current"
     HOURLY = "hourly"

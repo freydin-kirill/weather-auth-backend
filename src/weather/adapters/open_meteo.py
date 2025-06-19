@@ -1,12 +1,11 @@
 from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
-from src.weather.schemas.base import BaseWeatherSchema, BaseWriteWeatherSchema
-from src.weather.schemas.open_meteo import SCurrentOpenMeteoData, SHourlyOpenMeteoData, SWriteOpenMeteoData
+from src.weather.schemas.base import BaseReadWeatherSchema, BaseWeatherSchema
+from src.weather.schemas.open_meteo import SCurrentOpenMeteoData, SHourlyOpenMeteoData
 from src.weather.utils.enums import Providers, SchemaMode
 
 
 class OpenMeteoAdapter(BaseWeatherAdapter):
-    _url: str = settings.OPEN_METEO_API_URL
     _params: dict[str, str | float | int | list[str]] = {
         "latitude": 0.0,
         "longitude": 0.0,
@@ -14,20 +13,28 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
     }
 
     @classmethod
+    def url(cls) -> str:
+        return settings.OPEN_METEO_API_URL
+
+    @classmethod
     def name(cls) -> str:
         return Providers.OPEN_METEO.value
 
     @classmethod
-    def get_write_schema(cls) -> type[BaseWriteWeatherSchema]:
-        return SWriteOpenMeteoData
+    def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+        return {
+            SchemaMode.READ: BaseReadWeatherSchema,
+            SchemaMode.CURRENT: SCurrentOpenMeteoData,
+            SchemaMode.HOURLY: SHourlyOpenMeteoData,
+        }
 
     @classmethod
-    def get_response_schema(cls, mode: SchemaMode) -> type[BaseWeatherSchema]:
-        schemas = {
-            SchemaMode.CURRENT.value: SCurrentOpenMeteoData,
-            SchemaMode.HOURLY.value: SHourlyOpenMeteoData,
-        }
-        return schemas[mode.value]
+    def preprocess_data(cls, data: dict, mode: SchemaMode) -> dict:
+        data.update({"provider": cls.name()})
+        schema = cls.schemas().get(mode, None)
+        if not schema:
+            raise ValueError(f"Schema for mode {mode} not found in {cls.name()} adapter.")
+        return schema.model_validate(data).model_dump()
 
     @classmethod
     async def fetch_current_weather(cls, latitude: float, longitude: float, **kwargs) -> dict:
@@ -37,7 +44,7 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
             "weather_code",
             "wind_speed_10m",
         ]
-        return await send_weather_request(cls._url, cls._params)
+        return await send_weather_request(cls.url(), cls._params)
 
     @classmethod
     async def fetch_hourly_forecast(cls, latitude: float, longitude: float, **kwargs) -> dict:
@@ -47,4 +54,4 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
             "weather_code",
             "wind_speed_10m",
         ]
-        return await send_weather_request(cls._url, cls._params)
+        return await send_weather_request(cls.url(), cls._params)

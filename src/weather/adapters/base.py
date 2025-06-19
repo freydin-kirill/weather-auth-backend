@@ -14,8 +14,12 @@ async def send_weather_request(url, params) -> dict:
 
 
 class BaseWeatherAdapter(ABC):
-    _url: str
-    _params: dict[str, str | int | list[str | float]]
+    _params: dict[str, str | int | list[str | float]] = {}
+
+    @classmethod
+    @abstractmethod
+    def url(cls) -> str:
+        pass
 
     @classmethod
     @abstractmethod
@@ -24,20 +28,20 @@ class BaseWeatherAdapter(ABC):
 
     @classmethod
     @abstractmethod
-    def get_write_schema(cls) -> type[BaseWeatherSchema]:
+    def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
         pass
 
     @classmethod
     @abstractmethod
-    def get_response_schema(cls, mode: SchemaMode) -> type[BaseWeatherSchema]:
+    def preprocess_data(cls, data: dict, mode: SchemaMode) -> dict:
         pass
 
     @classmethod
     @abstractmethod
     async def fetch_current_weather(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        pass
+        """Returns raw response from the weather API for current weather data."""
 
     @classmethod
     @abstractmethod
     async def fetch_hourly_forecast(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        pass
+        """Returns raw response from the weather API for hourly forecast data."""
