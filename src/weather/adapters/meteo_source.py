@@ -6,16 +6,18 @@ from src.weather.utils.enums import Providers, SchemaMode
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):
-    _params: dict[str, str | float | int | list[str]] = {
-        "lat": 0.0,
-        "lon": 0.0,
-        "timezone": "auto",
-        "key": settings.METEO_SOURCE_API_KEY,
-    }
-
     @classmethod
     def url(cls) -> str:
         return settings.METEO_SOURCE_API_URL
+
+    @classmethod
+    def params(cls) -> dict[str, str | int | list[str | float]]:
+        return {
+            "lat": 0.0,
+            "lon": 0.0,
+            "timezone": "auto",
+            "key": settings.METEO_SOURCE_API_KEY,
+        }
 
     @classmethod
     def name(cls) -> str:
@@ -39,22 +41,18 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
 
     @classmethod
     async def fetch_current_weather(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        cls._params.update(
-            {
-                "lat": latitude,
-                "lon": longitude,
-                "sections": "current",
-            }
-        )
-        return await send_weather_request(cls.url(), cls._params)
+        params = cls.params() | {
+            "lat": latitude,
+            "lon": longitude,
+            "sections": "current",
+        }
+        return await send_weather_request(cls.url(), params)
 
     @classmethod
     async def fetch_hourly_forecast(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        cls._params.update(
-            {
-                "lat": latitude,
-                "lon": longitude,
-                "sections": "hourly",
-            }
-        )
-        return await send_weather_request(cls.url(), cls._params)
+        params = cls.params() | {
+            "lat": latitude,
+            "lon": longitude,
+            "sections": "hourly",
+        }
+        return await send_weather_request(cls.url(), params)

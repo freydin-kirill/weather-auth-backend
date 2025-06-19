@@ -16,7 +16,7 @@ class BaseDAO(Generic[T]):
     This class serves as a common for all DAO classes, providing common functionality.
     """
 
-    model = type[T]
+    model: type[T]
 
     @classmethod
     async def find_all(cls):

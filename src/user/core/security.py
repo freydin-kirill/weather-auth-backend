@@ -13,7 +13,7 @@ from src.config import settings
 security = HTTPBearer()
 
 
-def create_access_token(subject: str, expires_delta: timedelta = None) -> str:
+def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
     if not expires_delta:
         expires_delta = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     expire = datetime.now(UTC) + expires_delta

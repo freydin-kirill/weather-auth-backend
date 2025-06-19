@@ -35,7 +35,9 @@ class SUserRegister(SUserRead):
 
     @classmethod
     @field_validator("phone_number")
-    def validate_phone_number(cls, values: str) -> str:
-        if not re.match(r"^\+\d{1,15}$", values):
+    def validate_phone_number(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        if not re.match(r"^\+\d{1,15}$", value):
             raise ValueError("Incorrect phone number format")
-        return values
+        return value

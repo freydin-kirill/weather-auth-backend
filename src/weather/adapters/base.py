@@ -14,11 +14,14 @@ async def send_weather_request(url, params) -> dict:
 
 
 class BaseWeatherAdapter(ABC):
-    _params: dict[str, str | int | list[str | float]] = {}
-
     @classmethod
     @abstractmethod
     def url(cls) -> str:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def params(cls) -> dict[str, str | int | list[str | float]]:
         pass
 
     @classmethod
