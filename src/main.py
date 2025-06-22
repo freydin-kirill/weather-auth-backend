@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, status
+from fastapi.responses import RedirectResponse
 
 from src.user.routers.admin import router as admin_router
 from src.user.routers.auth import router as auth_router
@@ -18,7 +19,8 @@ app.include_router(weather_router)
 
 @app.get("/")
 def home_page():
-    return {"message": "Hello World!"}
+    # Redirect to /docs for easy access to API documentation
+    return RedirectResponse(url="/docs", status_code=status.HTTP_302_FOUND)
 
 
 @app.get("/health")
