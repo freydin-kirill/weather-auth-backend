@@ -1,6 +1,6 @@
 from collections.abc import AsyncGenerator
 
-from fastapi import Depends, Request
+from fastapi import Depends
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -11,21 +11,20 @@ from src.common.exceptions import (
     UserNotFoundException,
 )
 from src.db.session import async_session_factory
-from src.user.core.security import verify_access_token
+from src.user.core.security import oauth2_scheme, verify_access_token
 from src.user.crud import UserDAO
 from src.user.models import User
 
 
-def get_token(request: Request):
-    token = request.cookies.get("users_access_token")
+def get_token(token: str = Depends(oauth2_scheme)):
     if not token:
         raise TokenNotFoundException
     return token
 
 
 async def get_current_user(token: str = Depends(get_token)):
-    user_id = verify_access_token(token)
-    user = await UserDAO.find_one_or_none_by_id(int(user_id))
+    username = verify_access_token(token)
+    user = await UserDAO.find_one_or_none(email=username)
     if not user:
         raise UserNotFoundException
     return user

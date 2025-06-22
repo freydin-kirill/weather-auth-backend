@@ -1,6 +1,6 @@
 from datetime import UTC, datetime, timedelta
 
-from fastapi.security import HTTPBearer
+from fastapi.security import OAuth2PasswordBearer
 from jwt import ExpiredSignatureError, PyJWTError
 from jwt import decode as jwt_decode
 from jwt import encode as jwt_encode
@@ -9,8 +9,7 @@ from src.common.exceptions import TokenExpiredException, TokenInvalidException, 
 from src.config import settings
 
 
-# TODO: Add JWT authentication support
-security = HTTPBearer()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
@@ -35,11 +34,10 @@ def verify_access_token(token: str) -> str:
     if (not expire) or (expire_time < datetime.now(UTC)):
         raise TokenExpiredException
 
-    user_id = payload.get("sub")
-    if not user_id:
+    username = payload.get("sub")
+    if not username:
         raise UserNotFoundException
-
-    return user_id
+    return username
 
 
 # TODO: Add refresh token support

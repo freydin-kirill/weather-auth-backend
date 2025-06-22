@@ -26,14 +26,14 @@ class BaseDAO(Generic[T]):
             return result.scalars().all()
 
     @classmethod
-    async def find_one_or_none(cls, **filter_by):
+    async def find_one_or_none(cls, **filter_by) -> T | None:
         async with async_session_factory() as session:
             query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             return result.scalar_one_or_none()
 
     @classmethod
-    async def find_one_or_none_by_id(cls, data_id: int):
+    async def find_one_or_none_by_id(cls, data_id: int) -> T | None:
         return await cls.find_one_or_none(id=data_id)
 
     @classmethod

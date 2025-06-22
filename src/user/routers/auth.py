@@ -1,5 +1,5 @@
-from fastapi import APIRouter
-from starlette.responses import Response
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 from src.common.exceptions import (
     UserAlreadyExistsException,
@@ -9,7 +9,7 @@ from src.common.exceptions import (
 from src.user.core.hashing import get_hashed_password, verify_password
 from src.user.core.security import create_access_token
 from src.user.crud import UserDAO
-from src.user.schemas import SUserLogin, SUserRegister
+from src.user.schemas import SUserRegister, Token
 
 
 router = APIRouter(
@@ -19,7 +19,7 @@ router = APIRouter(
 
 
 @router.post("/register/")
-async def register_user(user_data: SUserRegister) -> dict:
+async def register(user_data: SUserRegister) -> dict:
     user = await UserDAO.find_one_or_none(email=user_data.email)
     if user:
         raise UserAlreadyExistsException
@@ -29,19 +29,12 @@ async def register_user(user_data: SUserRegister) -> dict:
     return {"message": "User registered successfully"}
 
 
-@router.post("/login/")
-async def login_user(response: Response, user_data: SUserLogin):
-    user = await UserDAO.find_one_or_none(email=user_data.email)
-    if not user or not verify_password(user_data.password, user.password):
+@router.post("/login/", response_model=Token)
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await UserDAO.find_one_or_none(email=form_data.username)
+    if not user or not verify_password(form_data.password, str(user.password)):
         raise UserEmailOrPasswordException
     if not user.is_active:
         raise UserInactiveException
-    access_token = create_access_token(subject=str(user.id))
-    response.set_cookie(key="users_access_token", value=access_token, httponly=True)
-    return {"message": "Login successfully"}
-
-
-@router.post("/logout/")
-async def logout_user(response: Response):
-    response.delete_cookie(key="users_access_token")
-    return {"message": "Logout successfully"}
+    access_token = create_access_token(subject=str(user.email))
+    return Token(access_token=access_token, token_type="bearer")

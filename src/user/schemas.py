@@ -3,9 +3,9 @@ import re
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
 
-class SUserLogin(BaseModel):
-    email: EmailStr = Field(max_length=50, description="User's email address")
-    password: str = Field(min_length=8, max_length=50, description="User's password")
+class Token(BaseModel):
+    access_token: str
+    token_type: str
 
 
 class SUserRead(BaseModel):
