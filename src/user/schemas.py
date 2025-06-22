@@ -33,8 +33,8 @@ class SUserRead(BaseModel):
 class SUserRegister(SUserRead):
     password: str = Field(min_length=8, max_length=50, description="User's password")
 
-    @classmethod
     @field_validator("phone_number")
+    @classmethod
     def validate_phone_number(cls, value: str | None) -> str | None:
         if value is None:
             return None
