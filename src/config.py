@@ -22,9 +22,15 @@ class Settings(BaseSettings):
     METEO_SOURCE_API_KEY: str = Field(..., env="METEO_SOURCE_API_KEY")
     METEO_SOURCE_API_URL: str = Field(..., env="METEO_SOURCE_API_URL")
 
+    TOMORROW_IO_REALTIME_API_URL: str = Field(..., env="TOMORROW_IO_REALTIME_API_URL")
+    TOMORROW_IO_FORECAST_API_URL: str = Field(..., env="TOMORROW_IO_FORECAST_API_URL")
+    TOMORROW_IO_API_KEY: str = Field(..., env="TOMORROW_IO_API_KEY")
+
     @property
     def db_url_async(self) -> str:
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return (
+            f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
 
 
 settings = Settings()
