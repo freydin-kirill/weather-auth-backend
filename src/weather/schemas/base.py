@@ -6,7 +6,7 @@ from pydantic import AliasChoices, BaseModel, Field, field_validator
 
 
 class BaseWeatherSchema(BaseModel):
-    timezone: str
+    timezone: str = Field("UTC", validation_alias=AliasChoices("tz", "timezone"))
     latitude: float = Field(validation_alias=AliasChoices("lat", "latitude"))
     longitude: float = Field(validation_alias=AliasChoices("lon", "longitude"))
 

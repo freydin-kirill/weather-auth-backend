@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from httpx import AsyncClient
 
 from src.weather.schemas.base import BaseWeatherSchema
-from src.weather.utils.enums import SchemaMode
+from src.weather.utils.enums import ProvidersMode
 
 
 async def send_weather_request(url, params) -> dict:
@@ -16,12 +16,12 @@ async def send_weather_request(url, params) -> dict:
 class BaseWeatherAdapter(ABC):
     @classmethod
     @abstractmethod
-    def url(cls) -> str:
+    def url(cls, **kwargs) -> str:
         pass
 
     @classmethod
     @abstractmethod
-    def params(cls) -> dict[str, str | int | float | list[str | float]]:
+    def params(cls, **kwargs) -> dict[str, str | int | float | list[str | float]]:
         pass
 
     @classmethod
@@ -31,12 +31,12 @@ class BaseWeatherAdapter(ABC):
 
     @classmethod
     @abstractmethod
-    def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+    def schemas(cls) -> dict[ProvidersMode, type[BaseWeatherSchema]]:
         pass
 
     @classmethod
     @abstractmethod
-    def preprocess_data(cls, data: dict, mode: SchemaMode) -> dict:
+    def preprocess_data(cls, data: dict, mode: ProvidersMode) -> dict:
         pass
 
     @classmethod

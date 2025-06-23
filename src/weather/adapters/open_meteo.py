@@ -2,7 +2,7 @@ from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
 from src.weather.schemas.base import BaseReadWeatherSchema, BaseWeatherSchema
 from src.weather.schemas.open_meteo import SCurrentOpenMeteoData, SHourlyOpenMeteoData
-from src.weather.utils.enums import Providers, SchemaMode
+from src.weather.utils.enums import Providers, ProvidersMode
 
 
 class OpenMeteoAdapter(BaseWeatherAdapter):
@@ -13,11 +13,11 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
     ]
 
     @classmethod
-    def url(cls) -> str:
+    def url(cls, **kwargs) -> str:
         return settings.OPEN_METEO_API_URL
 
     @classmethod
-    def params(cls) -> dict[str, str | int | float | list[str | float]]:
+    def params(cls, **kwargs) -> dict[str, str | int | float | list[str | float]]:
         return {
             "latitude": 0.0,
             "longitude": 0.0,
@@ -29,15 +29,15 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
         return Providers.OPEN_METEO.value
 
     @classmethod
-    def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+    def schemas(cls) -> dict[ProvidersMode, type[BaseWeatherSchema]]:
         return {
-            SchemaMode.READ: BaseReadWeatherSchema,
-            SchemaMode.CURRENT: SCurrentOpenMeteoData,
-            SchemaMode.HOURLY: SHourlyOpenMeteoData,
+            ProvidersMode.READ: BaseReadWeatherSchema,
+            ProvidersMode.CURRENT: SCurrentOpenMeteoData,
+            ProvidersMode.HOURLY: SHourlyOpenMeteoData,
         }
 
     @classmethod
-    def preprocess_data(cls, data: dict, mode: SchemaMode) -> dict:
+    def preprocess_data(cls, data: dict, mode: ProvidersMode) -> dict:
         data.update({"provider": cls.name()})
         schema = cls.schemas().get(mode, None)
         if not schema:

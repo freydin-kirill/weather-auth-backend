@@ -18,4 +18,4 @@ class CurrentWeatherHistory(Base, CreatedAtMixin):
     summary: Mapped[str] = mapped_column(nullable=False)
     temperature: Mapped[float] = mapped_column(nullable=False)
     wind_speed: Mapped[float] = mapped_column(nullable=False)
-    time: Mapped[datetime] = mapped_column(TIMESTAMP, nullable=False)
+    time: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), nullable=False)

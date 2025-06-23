@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     METEO_SOURCE_API_KEY: str = Field(..., env="METEO_SOURCE_API_KEY")
     METEO_SOURCE_API_URL: str = Field(..., env="METEO_SOURCE_API_URL")
 
-    TOMORROW_IO_REALTIME_API_URL: str = Field(..., env="TOMORROW_IO_REALTIME_API_URL")
-    TOMORROW_IO_FORECAST_API_URL: str = Field(..., env="TOMORROW_IO_FORECAST_API_URL")
+    TOMORROW_IO_CURRENT_API_URL: str = Field(..., env="TOMORROW_IO_CURRENT_API_URL")
+    TOMORROW_IO_HOURLY_API_URL: str = Field(..., env="TOMORROW_IO_HOURLY_API_URL")
     TOMORROW_IO_API_KEY: str = Field(..., env="TOMORROW_IO_API_KEY")
 
     @property
