@@ -11,7 +11,7 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
         return settings.METEO_SOURCE_API_URL
 
     @classmethod
-    def params(cls) -> dict[str, str | int | list[str | float]]:
+    def params(cls) -> dict[str, str | int | float | list[str | float]]:
         return {
             "lat": 0.0,
             "lon": 0.0,

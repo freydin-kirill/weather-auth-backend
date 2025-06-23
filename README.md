@@ -16,7 +16,7 @@ geographic location (latitude & longitude).
 
 ## Features
 
-- **User Management**  
+- **User Management**
   - **Register** new users (`POST /auth/register`)  
   - **Login** with JWT (`POST /auth/login`)  
   - **Logout** (`POST /auth/logout`)
@@ -24,25 +24,25 @@ geographic location (latitude & longitude).
   - **Update user email** (`POST /users/update/email`)
   - **Update user password** (`POST /users/update/password`)
 
-- **Admin Features**  
+- **Admin Features**
   - **List of users** (`GET /admin/get_all_users`)  
   - **Delete user** (`POST /admin/delete_user/{user_id}`)  
   - **Update user role** (`POST /admin/change_user_role/{user_id}`)
   - **Update user active status** (`POST /admin/change_user_active_status/{user_id}`)
 
-- **Weather Endpoints**  
-  - **Current weather** (`POST /weather/current`)  
+- **Weather Endpoints**
+  - **Current weather** (`POST /weather/current`)
   - **Hourly weather forecast** (`POST /weather/hourly_forecast`)
 
-- **Security**  
-  - ~~OAuth2 password flow with **Bearer** tokens~~  
-  - Password hashing with **PassLib**  
+- **Security**
+  - OAuth2 password flow with **Bearer** tokens
+  - Password hashing with **PassLib**
   - Protected routes via JWT validation
 
-- **Database & Migrations**  
-  - **SQLAlchemy** models  
-  - **Alembic** for migrations  
+- **Database & Migrations**
+  - **SQLAlchemy** models
+  - **Alembic** for migrations
 
-- **Testing & Quality**  
-  - ~~Unit & integration tests with **pytest**~~  
+- **Testing & Quality**
+  - ~~Unit & integration tests with **pytest**~~
   - `pre-commit` hooks: **ruff**, **black**, **isort**, **flake8**

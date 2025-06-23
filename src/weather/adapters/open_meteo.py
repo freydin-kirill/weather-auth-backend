@@ -17,7 +17,7 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
         return settings.OPEN_METEO_API_URL
 
     @classmethod
-    def params(cls) -> dict[str, str | int | list[str | float]]:
+    def params(cls) -> dict[str, str | int | float | list[str | float]]:
         return {
             "latitude": 0.0,
             "longitude": 0.0,

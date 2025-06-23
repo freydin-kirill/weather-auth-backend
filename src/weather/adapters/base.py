@@ -21,7 +21,7 @@ class BaseWeatherAdapter(ABC):
 
     @classmethod
     @abstractmethod
-    def params(cls) -> dict[str, str | int | list[str | float]]:
+    def params(cls) -> dict[str, str | int | float | list[str | float]]:
         pass
 
     @classmethod
