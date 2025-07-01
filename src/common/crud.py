@@ -19,9 +19,9 @@ class BaseDAO(Generic[T]):
     model: type[T]
 
     @classmethod
-    async def find_all(cls):
+    async def find_all(cls, **filter_by) -> list[T]:
         async with async_session_factory() as session:
-            query = select(cls.model)
+            query = select(cls.model).filter_by(**filter_by)
             result = await session.execute(query)
             return result.scalars().all()
 

@@ -1,28 +1,11 @@
-from src.config import settings
 from src.weather.adapters.base import BaseWeatherAdapter, send_weather_request
+from src.weather.models import WeatherProvider
 from src.weather.schemas.base import BaseReadWeatherSchema, BaseWeatherSchema
 from src.weather.schemas.meteo_source import SCurrentMeteoSourceData, SHourlyMeteoSourceData
-from src.weather.utils.enums import Providers, SchemaMode
+from src.weather.utils.enums import SchemaMode
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):
-    @classmethod
-    def url(cls) -> str:
-        return settings.METEO_SOURCE_API_URL
-
-    @classmethod
-    def params(cls) -> dict[str, str | int | float | list[str | float]]:
-        return {
-            "lat": 0.0,
-            "lon": 0.0,
-            "timezone": "auto",
-            "key": settings.METEO_SOURCE_API_KEY,
-        }
-
-    @classmethod
-    def name(cls) -> str:
-        return Providers.METEO_SOURCE.value
-
     @classmethod
     def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
         return {
@@ -32,27 +15,25 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
         }
 
     @classmethod
-    def preprocess_data(cls, data: dict, mode: SchemaMode) -> dict:
-        data.update({"provider": cls.name()})
-        schema = cls.schemas().get(mode, None)
-        if not schema:
-            raise ValueError(f"Schema for mode {mode} not found in {cls.name()} adapter.")
-        return schema.model_validate(data).model_dump()
-
-    @classmethod
-    async def fetch_current_weather(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        params = cls.params() | {
+    async def fetch_current_weather(
+        cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
+    ) -> dict:
+        params = provider.params | {
             "lat": latitude,
             "lon": longitude,
             "sections": "current",
+            "key": provider.api_key,
         }
-        return await send_weather_request(cls.url(), params)
+        return await send_weather_request(provider.api_url, params)
 
     @classmethod
-    async def fetch_hourly_forecast(cls, latitude: float, longitude: float, **kwargs) -> dict:
-        params = cls.params() | {
+    async def fetch_hourly_forecast(
+        cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
+    ) -> dict:
+        params = provider.params | {
             "lat": latitude,
             "lon": longitude,
             "sections": "hourly",
+            "key": provider.api_key,
         }
-        return await send_weather_request(cls.url(), params)
+        return await send_weather_request(provider.api_url, params)

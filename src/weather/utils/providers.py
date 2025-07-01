@@ -1,17 +1,14 @@
 from src.weather.adapters.base import BaseWeatherAdapter
 from src.weather.adapters.meteo_source import MeteoSourceAdapter
 from src.weather.adapters.open_meteo import OpenMeteoAdapter
-from src.weather.utils.enums import Providers
 
 
-def get_weather_adapter_by_name(name: Providers) -> BaseWeatherAdapter:
+def get_weather_adapter_by_name(name: str) -> BaseWeatherAdapter:
     providers: dict[str, BaseWeatherAdapter] = {
-        Providers.OPEN_METEO.value: OpenMeteoAdapter(),
-        Providers.METEO_SOURCE.value: MeteoSourceAdapter(),
+        "open_meteo": OpenMeteoAdapter(),
+        "meteo_source": MeteoSourceAdapter(),
     }
     try:
-        return providers[name.value]
+        return providers[name]
     except KeyError:
-        raise ValueError(
-            f"Provider '{name.value}' not found. Available providers: {', '.join(providers.keys())}"
-        )
+        raise ValueError(f"Provider '{name}' not found. Available providers: {', '.join(providers.keys())}")

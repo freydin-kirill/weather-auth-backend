@@ -17,14 +17,11 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = Field("HS256", env="JWT_ALGORITHM")
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(60, env="JWT_ACCESS_TOKEN_EXPIRE_MINUTES")
 
-    OPEN_METEO_API_URL: str = Field(..., env="OPEN_METEO_API_URL")
-
-    METEO_SOURCE_API_KEY: str = Field(..., env="METEO_SOURCE_API_KEY")
-    METEO_SOURCE_API_URL: str = Field(..., env="METEO_SOURCE_API_URL")
-
     @property
     def db_url_async(self) -> str:
-        return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return (
+            f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
 
 
 settings = Settings()
