@@ -17,22 +17,22 @@ geographic location (latitude & longitude).
 ## Features
 
 - **User Management**
-  - **Register** new users (`POST /auth/register`)  
-  - **Login** with JWT (`POST /auth/login`)  
-  - **Logout** (`POST /auth/logout`)
-  - **Get current user** (`GET /users/me`)
-  - **Update user email** (`POST /users/update/email`)
-  - **Update user password** (`POST /users/update/password`)
+  - **Register** new users (`POST /auth/register/`)  
+  - **Login** with JWT (`POST /auth/login/`)  
+  - **Logout** (`POST /auth/logout/`)
+  - **Get current user** (`GET /users/me/`)
+  - **Update user email** (`POST /users/update/email/`)
+  - **Update user password** (`POST /users/update/password/`)
 
 - **Admin Features**
-  - **List of users** (`GET /admin/get_all_users`)  
-  - **Delete user** (`POST /admin/delete_user/{user_id}`)  
-  - **Update user role** (`POST /admin/change_user_role/{user_id}`)
-  - **Update user active status** (`POST /admin/change_user_active_status/{user_id}`)
+  - **List of users** (`GET /admin/get_all_users/`)  
+  - **Delete user** (`POST /admin/delete_user/`)  
+  - **Update user role** (`POST /admin/change_user_role/`)
+  - **Update user active status** (`POST /admin/change_user_active_status/`)
 
 - **Weather Endpoints**
-  - **Current weather** (`POST /weather/current`)
-  - **Hourly weather forecast** (`POST /weather/hourly_forecast`)
+  - **Current weather** (`POST /weather/current/`)
+  - **Hourly weather forecast** (`POST /weather/hourly_forecast/`)
 
 - **Security**
   - OAuth2 password flow with **Bearer** tokens
