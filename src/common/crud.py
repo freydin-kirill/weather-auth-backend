@@ -1,16 +1,10 @@
-from typing import Generic, TypeVar
-
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import SQLAlchemyError
 
-from src.db.base import Base
 from src.db.session import async_session_factory
 
 
-T = TypeVar("T", bound=Base)
-
-
-class BaseDAO(Generic[T]):
+class BaseDAO[T]:
     """
     Base Data Access Object (DAO) class.
     This class serves as a common for all DAO classes, providing common functionality.
