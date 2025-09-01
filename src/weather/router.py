@@ -19,6 +19,8 @@ router = APIRouter(
 async def get_all_weather_providers(
     user=Depends(get_current_active_user),
 ):
+    """Return a list of available weather providers."""
+
     providers = await ProviderDAO.find_all(enabled=True)
     return [provider.name for provider in providers]
 
@@ -29,6 +31,8 @@ async def get_all_current_weather(
     longitude: float,
     user=Depends(get_current_active_user),
 ):
+    """Publish current weather from all enabled providers."""
+
     providers = await ProviderDAO.find_all(enabled=True)
     for provider in providers:
         adapter = get_weather_adapter_by_name(provider.name)
@@ -45,6 +49,8 @@ async def get_current_weather(
     weather_provider: str,
     user=Depends(get_current_active_user),
 ):
+    """Publish current weather from a specific provider."""
+
     provider = await ProviderDAO.find_one_or_none(name=weather_provider, enabled=True)
     if provider is None:
         raise ValueError(f"Weather provider '{weather_provider}' not found or disabled.")
@@ -61,6 +67,8 @@ async def get_all_hourly_weather(
     longitude: float,
     user=Depends(get_current_active_user),
 ):
+    """Return hourly forecast from all providers."""
+
     responses = []
     providers = await ProviderDAO.find_all(enabled=True)
     for provider in providers:
@@ -79,6 +87,8 @@ async def get_hourly_weather(
     weather_provider: str,
     user=Depends(get_current_active_user),
 ):
+    """Return hourly forecast from the selected provider."""
+
     provider = await ProviderDAO.find_one_or_none(name=weather_provider, enabled=True)
     if provider is None:
         raise ValueError(f"Weather provider '{weather_provider}' not found or disabled.")

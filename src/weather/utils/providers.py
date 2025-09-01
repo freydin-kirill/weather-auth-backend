@@ -4,6 +4,8 @@ from src.weather.adapters.open_meteo import OpenMeteoAdapter
 
 
 def get_weather_adapter_by_name(name: str) -> BaseWeatherAdapter:
+    """Return a weather adapter by its name."""
+
     providers: dict[str, BaseWeatherAdapter] = {
         "open_meteo": OpenMeteoAdapter(),
         "meteo_source": MeteoSourceAdapter(),

@@ -11,8 +11,9 @@ from src.weather.crud import CurrentWeatherDAO
 from src.weather.utils.rabbitmq import get_rabbitmq_connection
 
 
-def parse_datetime(obj):
-    """Custom JSON decoder to handle datetime strings"""
+def parse_datetime(obj: Any) -> Any:
+    """Convert string time fields to ``datetime`` objects."""
+
     if isinstance(obj, dict):
         for key, value in obj.items():
             if isinstance(value, str) and key == "time":
@@ -24,6 +25,8 @@ def parse_datetime(obj):
 
 
 async def handle_message(message: AbstractIncomingMessage) -> None:
+    """Process and save received weather message."""
+
     async with message.process():
         try:
             payload: dict[str, Any] = json.loads(message.body.decode(), object_hook=parse_datetime)
@@ -37,6 +40,8 @@ async def handle_message(message: AbstractIncomingMessage) -> None:
 
 
 async def start_consumer() -> None:
+    """Start a RabbitMQ queue consumer."""
+
     connection = await get_rabbitmq_connection()
     async with connection:
         # Creating channel

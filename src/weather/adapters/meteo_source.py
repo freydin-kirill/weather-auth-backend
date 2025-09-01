@@ -6,8 +6,12 @@ from src.weather.utils.enums import SchemaMode
 
 
 class MeteoSourceAdapter(BaseWeatherAdapter):
+    """Adapter for interacting with the MeteoSource service."""
+
     @classmethod
     def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+        """Return schemas used by the adapter."""
+
         return {
             SchemaMode.READ: BaseReadWeatherSchema,
             SchemaMode.CURRENT: SCurrentMeteoSourceData,
@@ -18,6 +22,8 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
     async def fetch_current_weather(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
+        """Request current weather from the service."""
+
         params = provider.params | {
             "lat": latitude,
             "lon": longitude,
@@ -30,6 +36,8 @@ class MeteoSourceAdapter(BaseWeatherAdapter):
     async def fetch_hourly_forecast(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
+        """Request an hourly forecast."""
+
         params = provider.params | {
             "lat": latitude,
             "lon": longitude,

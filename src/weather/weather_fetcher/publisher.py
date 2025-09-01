@@ -10,6 +10,8 @@ from src.weather.utils.rabbitmq import get_rabbitmq_connection
 
 
 class DateTimeEncoder(json.JSONEncoder):
+    """JSON encoder that converts datetime to string."""
+
     def default(self, obj):
         if isinstance(obj, datetime):
             return obj.isoformat()
@@ -17,6 +19,8 @@ class DateTimeEncoder(json.JSONEncoder):
 
 
 async def publish_weather_message(message: dict[str, Any]) -> None:
+    """Publish weather message to RabbitMQ queue."""
+
     connection = await get_rabbitmq_connection()
     async with connection:
         # Creating channel

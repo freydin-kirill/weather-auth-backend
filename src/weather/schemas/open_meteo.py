@@ -19,6 +19,8 @@ def _make_aliases(path: str, field_name: str) -> AliasPath | None:
 
 
 class SCurrentOpenMeteoData(BaseWeatherSchema):
+    """Schema for current weather from Open-Meteo."""
+
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
             validation_alias=lambda field_name: _make_aliases("current", field_name),
@@ -28,10 +30,14 @@ class SCurrentOpenMeteoData(BaseWeatherSchema):
     @field_validator("summary", mode="before")
     @classmethod
     def _validate_weather_code(cls, value: int) -> str:
+        """Convert weather code to description."""
+
         return open_meteo_weather_codes.get(value, "Unknown")
 
 
 class SHourlyOpenMeteoData(BaseWeatherSchema):
+    """Schema for hourly forecast from Open-Meteo."""
+
     model_config = ConfigDict(
         alias_generator=AliasGenerator(
             validation_alias=lambda field_name: _make_aliases("hourly", field_name),
@@ -41,4 +47,6 @@ class SHourlyOpenMeteoData(BaseWeatherSchema):
     @field_validator("summary", mode="before")
     @classmethod
     def _validate_weather_codes(cls, values: list[int]) -> list[str]:
+        """Convert list of weather codes to descriptions."""
+
         return [open_meteo_weather_codes.get(code, "Unknown") for code in values]

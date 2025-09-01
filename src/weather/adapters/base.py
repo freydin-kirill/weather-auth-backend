@@ -7,7 +7,14 @@ from src.weather.schemas.base import BaseWeatherSchema
 from src.weather.utils.enums import SchemaMode
 
 
-async def send_weather_request(url, params) -> dict:
+async def send_weather_request(url: str, params: dict) -> dict:
+    """Send a GET request to a weather API.
+
+    :param url: service URL, str
+    :param params: request parameters, dict
+    :returns: service response as dictionary, dict
+    """
+
     async with AsyncClient() as client:
         response = await client.get(url, params=params)
         response.raise_for_status()
@@ -15,6 +22,8 @@ async def send_weather_request(url, params) -> dict:
 
 
 def preprocess_data(name: str, data: dict, schema: BaseWeatherSchema | None) -> dict:
+    """Validate and enrich provider data with schema."""
+
     if not schema:
         raise ValueError(f"Schema for {name} not found.")
     data.update({"provider": name})
@@ -22,11 +31,13 @@ def preprocess_data(name: str, data: dict, schema: BaseWeatherSchema | None) -> 
 
 
 class BaseWeatherAdapter(ABC):
-    """Base class for weather adapters."""
+    """Base class for weather service adapters."""
 
     @classmethod
     @abstractmethod
     def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+        """Return data schemas for different modes."""
+
         pass
 
     @classmethod
@@ -34,11 +45,11 @@ class BaseWeatherAdapter(ABC):
     async def fetch_current_weather(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
-        """Returns raw response from the weather API for current weather data."""
+        """Fetch current weather from the service."""
 
     @classmethod
     @abstractmethod
     async def fetch_hourly_forecast(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
-        """Returns raw response from the weather API for hourly forecast data."""
+        """Fetch hourly forecast from the service."""

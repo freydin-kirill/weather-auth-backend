@@ -17,16 +17,22 @@ router = APIRouter(
 
 @router.get("/me/", response_model=SUserRead)
 async def get_me(user: User = Depends(get_current_active_user)):
+    """Return information about the current user."""
+
     return user
 
 
 @router.post("/update/password/")
 async def change_user_password(new_password: str, user: User = Depends(get_current_active_user)):
+    """Change the current user's password."""
+
     return await UserDAO.update(item_id=user.id, password=get_hashed_password(new_password))
 
 
 @router.post("/update/email/")
 async def change_user_email(new_email: EmailStr, user: User = Depends(get_current_active_user)):
+    """Change the current user's email."""
+
     existing_user = await UserDAO.find_one_or_none(email=new_email)
     if existing_user:
         raise UserAlreadyExistsException

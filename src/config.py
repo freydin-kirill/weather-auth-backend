@@ -5,6 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    """Application and external service settings."""
+
     model_config = SettingsConfigDict(env_file=Path(__file__).parent / ".." / ".env")
 
     DB_HOST: str = Field(..., env="DB_HOST")
@@ -29,6 +31,11 @@ class Settings(BaseSettings):
 
     @property
     def db_url_async(self) -> str:
+        """Build the URL for an asynchronous database connection.
+
+        :returns: database connection string, str
+        """
+
         return (
             f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         )
