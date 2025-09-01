@@ -18,13 +18,17 @@ app.include_router(weather_router)
 
 
 @app.get("/")
-def home_page():
+def home_page() -> RedirectResponse:
+    """Redirect user to the API documentation page."""
+
     # Redirect to /docs for easy access to API documentation
     return RedirectResponse(url="/docs", status_code=status.HTTP_302_FOUND)
 
 
 @app.get("/health")
-def health():
+def health() -> dict[str, str]:
+    """Simple service health check."""
+
     return {"status": "ok", "message": "Service is running!"}
 
 

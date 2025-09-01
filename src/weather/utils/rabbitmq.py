@@ -5,6 +5,8 @@ from src.config import settings
 
 # noinspection PyTypeChecker
 async def get_rabbitmq_connection() -> RobustConnection:
+    """Create a connection to RabbitMQ."""
+
     connection: RobustConnection = await connect_robust(
         host=settings.RABBITMQ_HOST,
         port=settings.RABBITMQ_PORT,
