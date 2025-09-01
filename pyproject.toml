@@ -1,5 +1,5 @@
 [project]
-name = "SimpleAuthProject"
+name = "WeatherV2"
 version = "0.1.0"
 description = "A FastAPI project with SQLAlchemy and Alembic for database migrations."
 authors = [
@@ -7,7 +7,6 @@ authors = [
 ]
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
-package-mode = false
 
 
 [tool.black]
@@ -23,11 +22,11 @@ exclude = ["alembic", "__pycache__"]
 
 
 [tool.ruff]
+fix = true
 # Same as Black.
 line-length = 110
 # In addition to the standard set of exclusions
 extend-exclude = []
-fix = true
 
 
 [tool.ruff.lint]
@@ -77,6 +76,14 @@ force-single-line = false
 lines-after-imports = 2
 # Lines between `import X` and `from Y import Z`
 lines-between-types = 1
+# Order imports by type
+order-by-type = true
+# Section order
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+
+
+[tool.poetry]
+package-mode = false
 
 
 [tool.poetry.dependencies]
@@ -94,6 +101,7 @@ redis = "^5.2.1"
 sqlalchemy = "^2.0.40"
 uvicorn = "^0.34.1"
 tzdata = "^2025.2"
+aio-pika = "^9.5.4"
 
 
 [tool.poetry.group.dev.dependencies]
