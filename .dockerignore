@@ -1,0 +1,16 @@
+.git
+__pycache__
+.mypy_cache
+.pytest_cache
+.ruff_cache
+.venv
+venv
+dist
+build
+.env
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+alembic/versions/*.pyc
