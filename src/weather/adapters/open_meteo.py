@@ -6,6 +6,8 @@ from src.weather.utils.enums import SchemaMode
 
 
 class OpenMeteoAdapter(BaseWeatherAdapter):
+    """Adapter for the Open-Meteo service."""
+
     _fields: list[str] = [
         "temperature_2m",
         "weather_code",
@@ -14,6 +16,8 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
 
     @classmethod
     def schemas(cls) -> dict[SchemaMode, type[BaseWeatherSchema]]:
+        """Return schemas used by the adapter."""
+
         return {
             SchemaMode.READ: BaseReadWeatherSchema,
             SchemaMode.CURRENT: SCurrentOpenMeteoData,
@@ -24,6 +28,8 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
     async def fetch_current_weather(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
+        """Request current weather."""
+
         params = provider.params | {
             "timezone": "auto",
             "latitude": latitude,
@@ -36,6 +42,8 @@ class OpenMeteoAdapter(BaseWeatherAdapter):
     async def fetch_hourly_forecast(
         cls, latitude: float, longitude: float, provider: WeatherProvider, **kwargs
     ) -> dict:
+        """Request hourly forecast."""
+
         params = provider.params | {
             "timezone": "auto",
             "latitude": latitude,

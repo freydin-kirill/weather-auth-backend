@@ -8,6 +8,8 @@ from src.db.base import Base
 
 
 class CurrentWeatherHistory(Base, CreatedAtMixin):
+    """History of current weather from providers."""
+
     __tablename__ = "current_weather_history"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -22,6 +24,8 @@ class CurrentWeatherHistory(Base, CreatedAtMixin):
 
 
 class WeatherProvider(Base):
+    """Information about available weather providers."""
+
     __tablename__ = "weather_provider"
 
     id: Mapped[int] = mapped_column(primary_key=True)

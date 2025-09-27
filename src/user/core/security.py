@@ -13,6 +13,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def create_access_token(subject: str, expires_delta: timedelta | None = None) -> str:
+    """Create a JWT access token.
+
+    :param subject: user identifier, str
+    :param expires_delta: token lifetime, timedelta | None
+    :returns: serialized JWT token, str
+    """
+
     if not expires_delta:
         expires_delta = timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     expire = datetime.now(UTC) + expires_delta
@@ -22,6 +29,14 @@ def create_access_token(subject: str, expires_delta: timedelta | None = None) ->
 
 
 def verify_access_token(token: str) -> str:
+    """Validate a JWT access token.
+
+    :param token: access token, str
+    :returns: username extracted from token, str
+    :raises TokenExpiredException: if the token has expired
+    :raises TokenInvalidException: if the token is invalid
+    """
+
     try:
         payload = jwt_decode(jwt=token, key=settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
     except ExpiredSignatureError:
@@ -42,4 +57,10 @@ def verify_access_token(token: str) -> str:
 
 # TODO: Add refresh token support
 def refresh_access_token(token: str) -> str:
+    """Refresh an access token.
+
+    :param token: current refresh token, str
+    :returns: new access token, str
+    """
+
     pass

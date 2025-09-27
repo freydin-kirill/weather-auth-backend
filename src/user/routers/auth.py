@@ -20,6 +20,8 @@ router = APIRouter(
 
 @router.post("/register/")
 async def register(user_data: SUserRegister) -> dict:
+    """Register a new user."""
+
     user = await UserDAO.find_one_or_none(email=user_data.email)
     if user:
         raise UserAlreadyExistsException
@@ -30,7 +32,9 @@ async def register(user_data: SUserRegister) -> dict:
 
 
 @router.post("/login/", response_model=Token)
-async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
+    """Authenticate user and issue an access token."""
+
     user = await UserDAO.find_one_or_none(email=form_data.username)
     if not user or not verify_password(form_data.password, str(user.password)):
         raise UserEmailOrPasswordException

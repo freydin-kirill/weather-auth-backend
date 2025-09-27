@@ -7,6 +7,8 @@ from src.weather.schemas.base import BaseWeatherSchema
 
 
 class SCurrentMeteoSourceData(BaseWeatherSchema):
+    """Schema for current weather from MeteoSource."""
+
     summary: str = Field(validation_alias=AliasPath("current", "summary"))
     temperature: float = Field(validation_alias=AliasPath("current", "temperature"))
     wind_speed: float = Field(validation_alias=AliasPath("current", "wind", "speed"))
@@ -14,14 +16,20 @@ class SCurrentMeteoSourceData(BaseWeatherSchema):
     @model_validator(mode="before")
     @classmethod
     def _ensure_time(cls, values: dict[str, Any]):
+        """Add current timestamp."""
+
         values["time"] = datetime.now()
         return values
 
 
 class SHourlyMeteoSourceData(BaseWeatherSchema):
+    """Schema for hourly forecast from MeteoSource."""
+
     @model_validator(mode="before")
     @classmethod
     def _flatten_data(cls, values: dict[str, Any]):
+        """Flatten nested data into a simple format."""
+
         hourly_data = values.get("hourly", {}).get("data", {})
 
         times: list[datetime] = []

@@ -3,11 +3,15 @@ from sqlalchemy.orm import DeclarativeBase
 
 
 class Base(AsyncAttrs, DeclarativeBase):
+    """Base class for all SQLAlchemy models."""
+
     __abstract__ = True
     __repr_cols_number__ = 3
     __repr_cols_name__ = ()
 
     def __repr__(self) -> str:
+        """Return a string representation of the object."""
+
         cols = []
         for idx, col in enumerate(self.__table__.columns.keys()):
             if col in self.__repr_cols_name__ or idx < self.__repr_cols_number__:
